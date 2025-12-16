@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Management</title>
+    <link rel="stylesheet" href="https://unpkg.com/@cloudscape-design/global-styles/index.css">
+    <style>
+        /* Cloudscape Design System Variables */
+        :root {
+            --color-background-layout-main: #fafafa;
+            --color-background-container-content: #ffffff;
+            --color-text-heading-default: #0972d3;
+            --color-text-body-default: #16191f;
+            --color-text-body-secondary: #5f6b7a;
+            --color-border-control-default: #414d5c;
+            --color-border-item-default: #d5dbdb;
+            --color-border-item-selected: #0972d3;
+            --color-background-control-default: #ffffff;
+            --color-background-control-disabled: #e9ebed;
+            --color-background-item-selected: #f0f8ff;
+            --color-background-button-primary-default: #0972d3;
+            --color-background-button-primary-hover: #0862c1;
+            --color-background-button-primary-disabled: #879596;
+            --color-text-button-primary-default: #ffffff;
+            --color-text-link-default: #0972d3;
+            --color-text-link-hover: #0862c1;
+            --color-background-notification-green: #d4edda;
+            --color-text-notification-green: #155724;
+            --color-border-notification-green: #c3e6cb;
+            --space-xs: 4px;
+            --space-s: 8px;
+            --space-m: 16px;
+            --space-l: 24px;
+            --space-xl: 32px;
+            --space-xxl: 40px;
+            --border-radius-container: 16px;
+            --border-radius-control: 8px;
+            --border-radius-item: 8px;
+            --border-width-control-focus-ring: 2px;
+            --font-size-body-s: 12px;
+            --font-size-body-m: 14px;
+            --font-size-heading-xs: 16px;
+            --font-size-heading-s: 18px;
+            --font-size-heading-m: 20px;
+            --font-size-heading-l: 28px;
+            --font-weight-normal: 400;
+            --font-weight-bold: 700;
+            --line-height-body-m: 20px;
+            --line-height-heading-s: 22px;
+            --line-height-heading-l: 36px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Amazon Ember", "Helvetica Neue", Roboto, Arial, sans-serif;
+            background-color: var(--color-background-layout-main);
+            color: var(--color-text-body-default);
+            line-height: var(--line-height-body-m);
+            font-size: var(--font-size-body-m);
+        }
+
+        .awsui-app-layout {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .awsui-top-navigation {
+            background: var(--color-background-container-content);
+            border-bottom: 1px solid var(--color-border-item-default);
+            padding: var(--space-m) var(--space-l);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .awsui-top-navigation__identity {
+            font-size: var(--font-size-heading-xs);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-text-heading-default);
+        }
+
+        .awsui-content-layout {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: var(--space-l);
+            width: 100%;
+        }
+
+        .awsui-header {
+            margin-bottom: var(--space-l);
+        }
+
+        .awsui-header__heading {
+            font-size: var(--font-size-heading-l);
+            font-weight: var(--font-weight-bold);
+            line-height: var(--line-height-heading-l);
+            color: var(--color-text-heading-default);
+            margin-bottom: var(--space-s);
+        }
+
+        .awsui-header__description {
+            color: var(--color-text-body-secondary);
+            font-size: var(--font-size-body-m);
+        }
+
+        .awsui-container {
+            background: var(--color-background-container-content);
+            border: 1px solid var(--color-border-item-default);
+            border-radius: var(--border-radius-container);
+            padding: var(--space-l);
+            margin-bottom: var(--space-m);
+        }
+
+        .awsui-form-field {
+            margin-bottom: var(--space-l);
+        }
+
+        .awsui-form-field__label {
+            display: block;
+            font-weight: var(--font-weight-bold);
+            margin-bottom: var(--space-xs);
+            color: var(--color-text-body-default);
+            font-size: var(--font-size-body-m);
+        }
+
+        .awsui-form-field__description {
+            font-size: var(--font-size-body-s);
+            color: var(--color-text-body-secondary);
+            margin-bottom: var(--space-m);
+            line-height: 16px;
+        }
+
+        .awsui-radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-s);
+        }
+
+        .awsui-radio-button {
+            display: flex;
+            align-items: flex-start;
+            padding: var(--space-m);
+            border: 1px solid var(--color-border-item-default);
+            border-radius: var(--border-radius-item);
+            cursor: pointer;
+            transition: all 0.15s ease;
+            background: var(--color-background-control-default);
+            position: relative;
+        }
+
+        .awsui-radio-button:hover {
+            border-color: var(--color-border-control-default);
+        }
+
+        .awsui-radio-button.selected {
+            border-color: var(--color-border-item-selected);
+            background-color: var(--color-background-item-selected);
+        }
+
+        .awsui-radio-button__control {
+            margin-right: var(--space-m);
+            margin-top: 2px;
+            flex-shrink: 0;
+        }
+
+        .awsui-radio-button__control input[type="radio"] {
+            width: 16px;
+            height: 16px;
+            accent-color: var(--color-border-item-selected);
+        }
+
+        .awsui-radio-button__label {
+            cursor: pointer;
+            font-weight: var(--font-weight-normal);
+            color: var(--color-text-body-default);
+        }
+
+        .awsui-space-between {
+            display: flex;
+            gap: var(--space-m);
+            align-items: flex-end;
+            flex-wrap: wrap;
+        }
+
+        .awsui-input-container {
+            flex: 1;
+            min-width: 280px;
+            position: relative;
+        }
+
+        .awsui-input {
+            width: 100%;
+            padding: 8px 60px 8px 12px;
+            border: 1px solid var(--color-border-item-default);
+            border-radius: var(--border-radius-control);
+            font-size: var(--font-size-body-m);
+            font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', 'Courier New', monospace;
+            transition: border-color 0.15s ease, box-shadow 0.15s ease;
+            background: var(--color-background-control-default);
+            color: var(--color-text-body-default);
+            line-height: 20px;
+            min-height: 32px;
+        }
+
+        .awsui-input:focus {
+            outline: none;
+            border-color: var(--color-border-item-selected);
+            box-shadow: 0 0 0 var(--border-width-control-focus-ring) rgba(9, 114, 211, 0.25);
+        }
+
+        .awsui-input:disabled {
+            background-color: var(--color-background-control-disabled);
+            color: var(--color-text-body-secondary);
+            cursor: not-allowed;
+        }
+
+        .awsui-input__icon-right {
+            position: absolute;
+            right: var(--space-s);
+            top: 50%;
+            transform: translateY(-50%);
+            border: none;
+            background: none;
+            cursor: pointer;
+            padding: var(--space-xs) var(--space-s);
+            border-radius: var(--border-radius-control);
+            font-size: var(--font-size-body-s);
+            color: var(--color-text-link-default);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 24px;
+            font-weight: var(--font-weight-bold);
+        }
+
+        .awsui-input__icon-right:hover {
+            background-color: var(--color-background-control-disabled);
+            color: var(--color-text-link-hover);
+        }
+
+        .awsui-button {
+            padding: 6px var(--space-m);
+            border: 1px solid transparent;
+            border-radius: var(--border-radius-control);
+            font-size: var(--font-size-body-m);
+            font-weight: var(--font-weight-bold);
+            cursor: pointer;
+            transition: all 0.15s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-s);
+            min-height: 32px;
+            white-space: nowrap;
+            position: relative;
+        }
+
+        .awsui-button--variant-primary {
+            background-color: var(--color-background-button-primary-default);
+            color: var(--color-text-button-primary-default);
+            border-color: var(--color-background-button-primary-default);
+        }
+
+        .awsui-button--variant-primary:hover:not(:disabled) {
+            background-color: var(--color-background-button-primary-hover);
+            border-color: var(--color-background-button-primary-hover);
+        }
+
+        .awsui-button--variant-primary:disabled {
+            background-color: var(--color-background-button-primary-disabled);
+            border-color: var(--color-background-button-primary-disabled);
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .awsui-button--variant-normal {
+            background-color: var(--color-background-control-default);
+            color: var(--color-text-body-default);
+            border-color: var(--color-border-item-default);
+        }
+
+        .awsui-button--variant-normal:hover:not(:disabled) {
+            background-color: var(--color-background-control-disabled);
+        }
+
+        .awsui-button--variant-link {
+            background: none;
+            color: var(--color-text-link-default);
+            border: none;
+            text-decoration: underline;
+            padding: var(--space-xs) 0;
+        }
+
+        .awsui-button--variant-link:hover {
+            color: var(--color-text-link-hover);
+        }
+
+
+
+        .awsui-box--float-right {
+            display: flex;
+            justify-content: flex-end;
+            gap: var(--space-m);
+            margin-top: var(--space-xl);
+            padding-top: var(--space-l);
+            border-top: 1px solid var(--color-border-item-default);
+        }
+
+        .awsui-alert {
+            padding: var(--space-m);
+            border-radius: var(--border-radius-control);
+            margin-top: var(--space-m);
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-m);
+            border: 1px solid;
+        }
+
+        .awsui-alert--type-success {
+            background-color: var(--color-background-notification-green);
+            color: var(--color-text-notification-green);
+            border-color: var(--color-border-notification-green);
+        }
+
+
+
+        .awsui-alert__content {
+            font-size: var(--font-size-body-m);
+            line-height: var(--line-height-body-m);
+        }
+
+        .awsui-util-hide {
+            display: none !important;
+        }
+
+        .awsui-util-show {
+            display: flex !important;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .awsui-content-layout {
+                padding: var(--space-m);
+            }
+            
+            .awsui-space-between {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .awsui-box--float-right {
+                flex-direction: column;
+            }
+
+            .awsui-input-container {
+                min-width: auto;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .awsui-container {
+                padding: var(--space-m);
+            }
+
+            .awsui-header__heading {
+                font-size: var(--font-size-heading-m);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="awsui-app-layout">
+        <div class="awsui-top-navigation">
+            <div class="awsui-top-navigation__identity">Admin Console</div>
+            <div>Settings</div>
+        </div>
+
+        <div class="awsui-content-layout">
+            <div class="awsui-header">
+                <h1 class="awsui-header__heading">Set user password</h1>
+                <p class="awsui-header__description">Create or reset a password for user authentication. The password will be securely recorded and can be shared with the user.</p>
+            </div>
+
+            <div class="awsui-container">
+                <div class="awsui-form-field">
+                    <label class="awsui-form-field__label">Action</label>
+                    <p class="awsui-form-field__description">Choose whether to create a new password or reset an existing one.</p>
+                    <div class="awsui-radio-group">
+                        <div class="awsui-radio-button selected" data-value="setup">
+                            <div class="awsui-radio-button__control">
+                                <input type="radio" name="actionType" value="setup" id="action-setup" checked>
+                            </div>
+                            <label class="awsui-radio-button__label" for="action-setup">Create new password</label>
+                        </div>
+                        <div class="awsui-radio-button" data-value="reset">
+                            <div class="awsui-radio-button__control">
+                                <input type="radio" name="actionType" value="reset" id="action-reset">
+                            </div>
+                            <label class="awsui-radio-button__label" for="action-reset">Reset existing password</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="awsui-form-field" id="password-type-section">
+                    <label class="awsui-form-field__label">Password type</label>
+                    <p class="awsui-form-field__description">Temporary passwords require users to change them on first sign-in. Permanent passwords can be used immediately.</p>
+                    <div class="awsui-radio-group">
+                        <div class="awsui-radio-button selected" data-value="temporary">
+                            <div class="awsui-radio-button__control">
+                                <input type="radio" name="passwordType" value="temporary" id="type-temporary" checked>
+                            </div>
+                            <label class="awsui-radio-button__label" for="type-temporary">Temporary password</label>
+                        </div>
+                        <div class="awsui-radio-button" data-value="permanent">
+                            <div class="awsui-radio-button__control">
+                                <input type="radio" name="passwordType" value="permanent" id="type-permanent">
+                            </div>
+                            <label class="awsui-radio-button__label" for="type-permanent">Permanent password</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="awsui-form-field">
+                    <label class="awsui-form-field__label">Password</label>
+                    <p class="awsui-form-field__description">Enter a password or generate a secure one automatically. Passwords must be at least 8 characters.</p>
+                    <div class="awsui-space-between">
+                        <div class="awsui-input-container">
+                            <input type="password" id="password-input" class="awsui-input" placeholder="Enter password">
+                            <button type="button" class="awsui-input__icon-right" id="password-toggle">
+                                Show
+                            </button>
+                        </div>
+                        <button type="button" class="awsui-button awsui-button--variant-normal" id="generate-btn">
+                            Generate
+                        </button>
+                        <button type="button" class="awsui-button awsui-button--variant-normal" id="copy-btn" disabled>
+                            Copy
+                        </button>
+                    </div>
+                    <div id="copy-alert" class="awsui-alert awsui-alert--type-success awsui-util-hide">
+                        <div class="awsui-alert__content">Password copied to clipboard</div>
+                    </div>
+                </div>
+
+                <div class="awsui-box--float-right">
+                    <button type="button" class="awsui-button awsui-button--variant-link">Cancel</button>
+                    <button type="button" class="awsui-button awsui-button--variant-primary" id="confirm-btn" disabled>Set password</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class PasswordManager {
+            constructor() {
+                this.state = {
+                    actionType: 'setup',
+                    passwordType: 'temporary',
+                    password: '',
+                    showPassword: false
+                };
+                this.init();
+            }
+
+            init() {
+                this.setupEventListeners();
+                this.updateUI();
+            }
+
+            setupEventListeners() {
+                // Radio button handling
+                document.querySelectorAll('.awsui-radio-button').forEach(option => {
+                    option.addEventListener('click', (e) => {
+                        const input = option.querySelector('input[type="radio"]');
+                        input.checked = true;
+                        this.handleRadioChange(input);
+                    });
+                });
+
+                document.querySelectorAll('input[type="radio"]').forEach(radio => {
+                    radio.addEventListener('change', (e) => {
+                        this.handleRadioChange(e.target);
+                    });
+                });
+
+                // Password input
+                document.getElementById('password-input').addEventListener('input', (e) => {
+                    this.state.password = e.target.value;
+                    this.updateUI();
+                });
+
+                // Buttons
+                document.getElementById('generate-btn').addEventListener('click', () => {
+                    this.generatePassword();
+                });
+
+                document.getElementById('copy-btn').addEventListener('click', () => {
+                    this.copyPassword();
+                });
+
+                document.getElementById('password-toggle').addEventListener('click', () => {
+                    this.togglePasswordVisibility();
+                });
+
+                document.getElementById('confirm-btn').addEventListener('click', () => {
+                    this.handleConfirm();
+                });
+            }
+
+            handleRadioChange(input) {
+                // Update visual selection
+                document.querySelectorAll(`input[name="${input.name}"]`).forEach(radio => {
+                    const option = radio.closest('.awsui-radio-button');
+                    option.classList.toggle('selected', radio.checked);
+                });
+
+                // Update state
+                if (input.name === 'actionType') {
+                    this.state.actionType = input.value;
+                } else if (input.name === 'passwordType') {
+                    this.state.passwordType = input.value;
+                }
+
+                this.updateUI();
+            }
+
+            generatePassword() {
+                const length = 12;
+                const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*";
+                let password = "";
+                for (let i = 0; i < length; i++) {
+                    password += charset.charAt(Math.floor(Math.random() * charset.length));
+                }
+                this.state.password = password;
+                document.getElementById('password-input').value = password;
+                this.updateUI();
+            }
+
+            copyPassword() {
+                navigator.clipboard.writeText(this.state.password).then(() => {
+                    const alert = document.getElementById('copy-alert');
+                    alert.classList.remove('awsui-util-hide');
+                    alert.classList.add('awsui-util-show');
+                    setTimeout(() => {
+                        alert.classList.add('awsui-util-hide');
+                        alert.classList.remove('awsui-util-show');
+                    }, 3000);
+                });
+            }
+
+            togglePasswordVisibility() {
+                this.state.showPassword = !this.state.showPassword;
+                const input = document.getElementById('password-input');
+                const toggle = document.getElementById('password-toggle');
+                
+                input.type = this.state.showPassword ? 'text' : 'password';
+                toggle.textContent = this.state.showPassword ? 'Hide' : 'Show';
+            }
+
+            handleConfirm() {
+                if (!this.state.password) {
+                    alert('Enter a password to continue.');
+                    return;
+                }
+                
+                const action = this.state.actionType === 'reset' ? 'reset' : 'created';
+                const type = this.state.actionType === 'setup' ? ` (${this.state.passwordType})` : '';
+                alert(`Password ${action} successfully${type}.\n\nPassword: ${this.state.password}\n\nYou can now share this password with the user for sign-in.`);
+            }
+
+            updateUI() {
+                // Show/hide password type section
+                const passwordTypeSection = document.getElementById('password-type-section');
+                passwordTypeSection.style.display = this.state.actionType === 'setup' ? 'block' : 'none';
+
+                // Update confirm button text and state
+                const confirmBtn = document.getElementById('confirm-btn');
+                confirmBtn.textContent = this.state.actionType === 'reset' ? 'Reset password' : 'Set password';
+                confirmBtn.disabled = !this.state.password;
+
+                // Update copy button state
+                const copyBtn = document.getElementById('copy-btn');
+                copyBtn.disabled = !this.state.password;
+            }
+        }
+
+        // Initialize the app
+        new PasswordManager();
+    </script>
+</body>
+</html>
