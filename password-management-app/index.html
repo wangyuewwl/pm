@@ -134,28 +134,34 @@
         }
 
         .awsui-form-field {
-            margin-bottom: var(--space-l);
+            margin-bottom: 20px;
         }
 
         .awsui-form-field__label {
             display: block;
-            font-weight: var(--font-weight-bold);
+            color: var(--text-form-label, #0F141A);
+            font-family: "Amazon Ember";
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: 20px;
             margin-bottom: var(--space-xs);
-            color: var(--color-text-body-default);
-            font-size: var(--font-size-body-m);
         }
 
         .awsui-form-field__description {
-            font-size: var(--font-size-body-s);
-            color: var(--color-text-body-secondary);
-            margin-bottom: var(--space-m);
+            color: var(--text-form-secondary, #656871);
+            font-family: "Amazon Ember";
+            font-size: 12px;
+            font-style: normal;
+            font-weight: 400;
             line-height: 16px;
+            margin-bottom: var(--space-m);
         }
 
         .awsui-radio-group {
             display: flex;
             flex-direction: column;
-            gap: var(--space-m);
+            gap: 4px;
         }
 
         .awsui-radio-button {
@@ -180,8 +186,11 @@
 
         .awsui-radio-button__label {
             cursor: pointer;
-            font-weight: var(--font-weight-normal);
-            color: var(--color-text-body-default);
+            color: var(--text-form-default, #0F141A);
+            font-family: "Amazon Ember";
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 400;
             line-height: 20px;
         }
 
@@ -249,27 +258,26 @@
         }
 
         .awsui-button {
-            padding: 8px var(--space-m);
-            border: 1px solid transparent;
-            border-radius: var(--border-radius-control);
             font-size: var(--font-size-body-m);
             font-weight: var(--font-weight-bold);
             cursor: pointer;
             transition: all 0.15s ease;
             text-decoration: none;
-            display: inline-flex;
-            align-items: center;
+            display: flex;
             justify-content: center;
-            gap: var(--space-s);
+            align-items: center;
+            gap: var(--xs, 8px);
             min-height: 32px;
             white-space: nowrap;
             position: relative;
         }
 
         .awsui-button--variant-primary {
-            background-color: #0972d3;
+            padding: var(--xxs, 4px) var(--large, 20px);
+            border-radius: var(--border-radius-button, 20px);
+            border: var(--border-item-width, 2px) solid var(--background-button-primary-default, #F90);
+            background: var(--background-button-primary-default, #F90);
             color: #ffffff;
-            border-color: #0972d3;
             box-shadow: 0 1px 1px 0 rgba(0, 28, 36, 0.3);
         }
 
@@ -299,13 +307,19 @@
         }
 
         .awsui-button--variant-normal {
-            background-color: var(--color-background-control-default);
-            color: var(--color-text-body-default);
-            border-color: var(--color-border-item-default);
+            display: flex;
+            padding: var(--xxs, 4px) var(--large, 20px);
+            justify-content: center;
+            align-items: center;
+            gap: var(--xs, 8px);
+            border-radius: var(--border-radius-button, 20px);
+            border: var(--border-item-width, 2px) solid var(--border-button-normal-default, #006CE0);
+            background: var(--background-button-normal-default, #FFF);
+            color: var(--border-button-normal-default, #006CE0);
         }
 
         .awsui-button--variant-normal:hover:not(:disabled) {
-            background-color: var(--color-background-control-disabled);
+            background-color: #f0f8ff;
         }
 
         .awsui-button--variant-link {
