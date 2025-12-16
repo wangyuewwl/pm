@@ -70,6 +70,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: "Amazon Ember", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
         }
 
         body {
@@ -282,19 +283,19 @@
         }
 
         .awsui-button--variant-primary:hover:not(:disabled) {
-            background-color: #0862c1;
-            border-color: #0862c1;
+            background: var(--background-button-primary-default, #F90);
+            border-color: var(--background-button-primary-default, #F90);
             box-shadow: 0 1px 1px 0 rgba(0, 28, 36, 0.3);
         }
 
         .awsui-button--variant-primary:active:not(:disabled) {
-            background-color: #07539e;
-            border-color: #07539e;
+            background: var(--background-button-primary-default, #F90);
+            border-color: var(--background-button-primary-default, #F90);
             box-shadow: inset 0 1px 2px 0 rgba(0, 28, 36, 0.15);
         }
 
         .awsui-button--variant-primary:focus:not(:disabled) {
-            outline: 2px solid #0972d3;
+            outline: 2px solid var(--background-button-primary-default, #F90);
             outline-offset: 2px;
         }
 
@@ -326,12 +327,13 @@
             background: none;
             color: var(--color-text-link-default);
             border: none;
-            text-decoration: underline;
+            text-decoration: none;
             padding: var(--space-xs) 0;
         }
 
         .awsui-button--variant-link:hover {
             color: var(--color-text-link-hover);
+            text-decoration: underline;
         }
 
 
