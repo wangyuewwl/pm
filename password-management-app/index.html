@@ -289,20 +289,22 @@
             border-radius: var(--border-radius-button, 20px);
             border: var(--border-item-width, 2px) solid var(--background-button-primary-default, #F90);
             background: var(--background-button-primary-default, #F90);
-            color: #ffffff;
-            box-shadow: 0 1px 1px 0 rgba(0, 28, 36, 0.3);
+            color: var(--text-form-default, #0F141A);
+            box-shadow: none;
         }
 
         .awsui-button--variant-primary:hover:not(:disabled) {
             background: var(--background-button-primary-default, #F90);
             border-color: var(--background-button-primary-default, #F90);
-            box-shadow: 0 1px 1px 0 rgba(0, 28, 36, 0.3);
+            color: var(--text-form-default, #0F141A);
+            box-shadow: none;
         }
 
         .awsui-button--variant-primary:active:not(:disabled) {
             background: var(--background-button-primary-default, #F90);
             border-color: var(--background-button-primary-default, #F90);
-            box-shadow: inset 0 1px 2px 0 rgba(0, 28, 36, 0.15);
+            color: var(--text-form-default, #0F141A);
+            box-shadow: none;
         }
 
         .awsui-button--variant-primary:focus:not(:disabled) {
@@ -313,7 +315,7 @@
         .awsui-button--variant-primary:disabled {
             background-color: #879596;
             border-color: #879596;
-            color: #ffffff;
+            color: var(--text-form-default, #0F141A);
             cursor: not-allowed;
             box-shadow: none;
         }
